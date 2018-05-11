@@ -7,23 +7,9 @@ var express = require("express"),
 
 
 seedDB();
-mongoose.connect("mongodb://localhost/yelp_camp");
+mongoose.connect("mongodb://localhost/yelp_camp_v3");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
-
-// Campground.create(
-//     {
-//         name: "Blueberries!",
-//         image: "https://cdn.pixabay.com/photo/2018/04/28/16/12/blueberry-3357568_960_720.jpg",
-//         description: "Yummys Berries!"
-
-//     },function(err, campground){
-//         if(err){
-//             console.log(err);
-//         } else{
-//             console.log(campground);
-//         }
-//     });
 
 app.get("/", function(req, res){
     res.render("landing");
@@ -64,10 +50,11 @@ app.get("/campgrounds/new", function(req, res){
 
 // SHOW ROUTE
 app.get("/campgrounds/:id", function(req, res){
-    Campground.findById(req.params.id, function(err, foundCampground){
+    Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
         if(err){
             console.log(err);
         }else{
+            console.log(foundCampground);
             res.render("show", {campground: foundCampground});
         }
     });
