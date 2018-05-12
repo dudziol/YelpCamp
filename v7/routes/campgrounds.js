@@ -3,7 +3,7 @@ var express = require("express"),
     Campground = require("../models/campground")
 
 // INDEX ROUTE
-router.get("/campgrounds", function(req, res){
+router.get("/", function(req, res){
     // Get all CGs from DB
     Campground.find({}, function(err, allCampgrounds){
         if(err){
@@ -15,7 +15,7 @@ router.get("/campgrounds", function(req, res){
 });
 
 // CREATE ROUTE
-router.post("/campgrounds", function(req, res){
+router.post("/", function(req, res){
     var name = req.body.name;
     var image = req.body.image;
     var desc = req.body.description;
@@ -31,12 +31,12 @@ router.post("/campgrounds", function(req, res){
 });
 
 // NEW ROUTE
-router.get("/campgrounds/new", function(req, res){
+router.get("/new", function(req, res){
     res.render("campgrounds/new");
 });
 
 // SHOW ROUTE
-router.get("/campgrounds/:id", function(req, res){
+router.get("/:id", function(req, res){
     Campground.findById(req.params.id).populate("comments").exec(function(err, foundCampground){
         if(err){
             console.log(err);
